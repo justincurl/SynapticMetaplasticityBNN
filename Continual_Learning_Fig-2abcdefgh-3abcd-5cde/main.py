@@ -253,10 +253,10 @@ for task_idx, task in enumerate(train_loader_list):
         current_bn_state = model.save_bn_states()
         
         for other_task_idx, other_task in enumerate(test_loader_list):
-            test_accuracy, test_loss = test(model, other_task, device, verbose=True)
+            test_accuracy, test_loss = test(model, other_task, device, other_task_idx, verbose=(other_task_idx==task_idx))
             data['acc_test_tsk_'+str(other_task_idx+1)].append(test_accuracy)
             data['loss_test_tsk_'+str(other_task_idx+1)].append(test_loss)
-        
+                
         model.load_bn_states(current_bn_state)
     
     plot_parameters(model, path, save=save_result)

@@ -86,6 +86,18 @@ for idx, task in enumerate(args.task_sequence):
         test_loader_list.append(fashion_mnist_test_loader)
         dset_train_list.append(fmnist_dset_train)
         task_names.append(task)
+    elif task == 'pFMNIST':
+        train_loader, test_loader, dset_train = create_permuted_loaders(task[1:])
+        train_loader_list.append(train_loader)
+        test_loader_list.append(test_loader)
+        dset_train_list.append(dset_train)
+        task_names.append(task+str(idx+1))
+    elif task == 'pUSPS':
+        train_loader, test_loader, dset_train = create_permuted_loaders(task[1:])
+        train_loader_list.append(train_loader)
+        test_loader_list.append(test_loader)
+        dset_train_list.append(dset_train)
+        task_names.append(task+str(idx+1))
     elif task == 'pMNIST':
         train_loader, test_loader, dset_train = create_permuted_loaders(task[1:])
         train_loader_list.append(train_loader)

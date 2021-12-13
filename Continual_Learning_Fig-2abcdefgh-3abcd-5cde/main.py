@@ -127,6 +127,7 @@ if args.interleaved:
     train_loader = torch.utils.data.DataLoader(dset_train, batch_size=100, shuffle=True, num_workers=1)
     train_loader_list = [train_loader]
 
+print(test_loader_list)
     
 # Hyperparameters
 lr = args.lr

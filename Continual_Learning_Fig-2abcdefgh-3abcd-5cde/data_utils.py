@@ -65,7 +65,7 @@ def create_permuted_loaders(task):
         dset_test = torchvision.datasets.MNIST(
             './mnist_pytorch', train=False, transform=transform, target_transform=None, download=True)
         test_loader = torch.utils.data.DataLoader(
-            dset_test, batch_size=1000, shuffle=False, num_workers=1)
+            dset_test, batch_size=100, shuffle=False, num_workers=1)
 
     elif task == 'FMNIST':
 

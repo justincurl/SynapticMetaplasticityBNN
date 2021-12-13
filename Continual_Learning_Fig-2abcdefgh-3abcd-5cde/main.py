@@ -253,18 +253,7 @@ for task_idx, task in enumerate(train_loader_list):
         current_bn_state = model.save_bn_states()
         
         for other_task_idx, other_task in enumerate(test_loader_list):
-
-            if args.scenario == 'task':
-                if other_task_idx>=task_idx:
-                    model.load_bn_states(current_bn_state)
-                    test_accuracy, test_loss = test(model , other_task, device, verbose=(other_task_idx==task_idx))
-                else:
-                    model.load_bn_states(bn_states[other_task_idx])
-                    test_accuracy, test_loss = test(model , other_task, device)
-
-            elif args.scenario =='domain':
-                test_accuracy, test_loss = test(model, other_task, device, verbose=True)
-            
+            test_accuracy, test_loss = test(model, other_task, device, verbose=True)
             data['acc_test_tsk_'+str(other_task_idx+1)].append(test_accuracy)
             data['loss_test_tsk_'+str(other_task_idx+1)].append(test_loss)
         

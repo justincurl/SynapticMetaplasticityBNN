@@ -16,6 +16,36 @@ from PIL import Image
 from models_utils import * 
 from data_utils import *
 
+def test(model, test_loader, device, task_idx, criterion = torch.nn.CrossEntropyLoss(reduction='sum'), verbose = False):
+
+    model.eval()
+    test_loss = 0
+    correct = 0
+
+    for data, target in test_loader:
+        if torch.cuda.is_available():
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            test_loss += criterion(output, target).item() # mean batch loss
+            pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
+            correct += pred.eq(target.data.view_as(pred)).cpu().sum()
+
+            test_loss /= len(test_loader.dataset)
+            test_acc = round( 100. * float(correct) / len(test_loader.dataset), 2)
+
+    if len(test_loader.dataset)==60000:
+        print(f"Task_idx: {task_idx}")
+        print('Train accuracy: {}/{} ({:.2f}%)'.format(
+        correct, len(test_loader.dataset),
+        test_acc))
+    else:
+        print(f"Task_idx: {task_idx}")
+        print('Test accuracy: {}/{} ({:.2f}%)'.format(
+        correct, len(test_loader.dataset),
+        test_acc))
+
+    return test_acc, test_loss
+
 parser = argparse.ArgumentParser(description='BNN learning several tasks in a row, metaplasticity is controlled by the argument meta.')
 
 parser.add_argument('--scenario', type = str, default = 'task', metavar = 'SC', help='1 mean per task or 1 mean for all task')
